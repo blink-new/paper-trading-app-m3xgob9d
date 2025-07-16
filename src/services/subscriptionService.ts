@@ -247,6 +247,59 @@ class SubscriptionService {
     return 0.99 + (amount * 0.001)
   }
 
+  // Update holdings with current prices
+  async updateRealMoneyHoldingsWithCurrentPrices(userId: string, holdings: RealMoneyHolding[]): Promise<RealMoneyHolding[]> {
+    const { tradingService } = await import('./tradingService')
+    
+    const updatedHoldings = holdings.map(holding => {
+      const stock = tradingService.getStock(holding.symbol)
+      if (stock) {
+        const currentValue = holding.shares * stock.currentPrice
+        const totalCost = holding.shares * holding.averagePrice
+        const gainLoss = currentValue - totalCost
+        const gainLossPercent = totalCost > 0 ? (gainLoss / totalCost) * 100 : 0
+
+        return {
+          ...holding,
+          companyName: stock.companyName,
+          currentPrice: stock.currentPrice,
+          totalValue: currentValue,
+          gainLoss,
+          gainLossPercent
+        }
+      }
+      return holding
+    })
+
+    const key = this.getStorageKey(userId, 'real_holdings')
+    localStorage.setItem(key, JSON.stringify(updatedHoldings))
+    return updatedHoldings
+  }
+
+  // Calculate portfolio metrics
+  async calculateRealMoneyPortfolioMetrics(userId: string, holdings: RealMoneyHolding[]): Promise<{
+    totalValue: number;
+    totalGainLoss: number;
+    totalGainLossPercent: number;
+  }> {
+    let totalValue = 0
+    let totalCost = 0
+
+    for (const holding of holdings) {
+      totalValue += holding.totalValue
+      totalCost += holding.shares * holding.averagePrice
+    }
+
+    const totalGainLoss = totalValue - totalCost
+    const totalGainLossPercent = totalCost > 0 ? (totalGainLoss / totalCost) * 100 : 0
+
+    return {
+      totalValue,
+      totalGainLoss,
+      totalGainLossPercent
+    }
+  }
+
   // Real Money Trading
   async executeRealMoneyTrade(userId: string, symbol: string, shares: number, price: number, type: 'buy' | 'sell'): Promise<{ success: boolean; message: string; transaction?: RealMoneyTransaction }> {
     const isEnabled = await this.isRealMoneyEnabled(userId)

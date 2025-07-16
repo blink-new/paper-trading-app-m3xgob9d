@@ -27,10 +27,6 @@ export function PremiumUpgrade({ userId, onSubscriptionChange }: PremiumUpgradeP
   const [loading, setLoading] = useState(false)
   const [trialDays, setTrialDays] = useState(0)
 
-  useEffect(() => {
-    loadSubscription()
-  }, [userId, loadSubscription])
-
   const loadSubscription = useCallback(async () => {
     try {
       const sub = await subscriptionService.getUserSubscription(userId)
@@ -44,6 +40,10 @@ export function PremiumUpgrade({ userId, onSubscriptionChange }: PremiumUpgradeP
       console.error('Failed to load subscription:', error)
     }
   }, [userId])
+
+  useEffect(() => {
+    loadSubscription()
+  }, [loadSubscription])
 
   const handleStartTrial = async () => {
     setLoading(true)

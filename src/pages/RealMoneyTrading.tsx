@@ -37,10 +37,6 @@ export function RealMoneyTrading({ userId }: RealMoneyTradingProps) {
   const [loading, setLoading] = useState(false)
   const [addFundsAmount, setAddFundsAmount] = useState('')
 
-  useEffect(() => {
-    loadData()
-  }, [loadData, userId])
-
   const loadData = useCallback(async () => {
     try {
       const enabled = await subscriptionService.isRealMoneyEnabled(userId)
@@ -61,6 +57,10 @@ export function RealMoneyTrading({ userId }: RealMoneyTradingProps) {
       console.error('Failed to load real money trading data:', error)
     }
   }, [userId])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
 
   const handleAddFunds = async () => {
     const amount = parseFloat(addFundsAmount)
