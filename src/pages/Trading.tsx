@@ -6,7 +6,8 @@ import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Search, TrendingUp, TrendingDown } from 'lucide-react'
+import { Search, TrendingUp, TrendingDown, BarChart3 } from 'lucide-react'
+import { StockChart } from '@/components/StockChart'
 
 // Mock stock data
 const mockStocks = [
@@ -24,6 +25,8 @@ export function Trading() {
   const [orderType, setOrderType] = useState<'buy' | 'sell'>('buy')
   const [shares, setShares] = useState('')
   const [isOrderDialogOpen, setIsOrderDialogOpen] = useState(false)
+  const [chartStock, setChartStock] = useState<any>(null)
+  const [isChartDialogOpen, setIsChartDialogOpen] = useState(false)
 
   const filteredStocks = mockStocks.filter(stock => 
     stock.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -98,6 +101,17 @@ export function Trading() {
                   </div>
                   
                   <div className="flex space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setChartStock(stock)
+                        setIsChartDialogOpen(true)
+                      }}
+                    >
+                      <BarChart3 className="h-4 w-4" />
+                    </Button>
+                    
                     <Dialog open={isOrderDialogOpen && selectedStock?.symbol === stock.symbol} onOpenChange={setIsOrderDialogOpen}>
                       <DialogTrigger asChild>
                         <Button 
@@ -219,6 +233,24 @@ export function Trading() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Stock Chart Dialog */}
+      <Dialog open={isChartDialogOpen} onOpenChange={setIsChartDialogOpen}>
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Stock Chart - {chartStock?.symbol}</DialogTitle>
+          </DialogHeader>
+          {chartStock && (
+            <StockChart
+              symbol={chartStock.symbol}
+              companyName={chartStock.companyName}
+              currentPrice={chartStock.currentPrice}
+              change={chartStock.change}
+              changePercent={chartStock.changePercent}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

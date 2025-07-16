@@ -9,6 +9,7 @@ import {
   ArrowUpRight,
   ArrowDownRight
 } from 'lucide-react'
+import { MarketOverview } from '@/components/MarketOverview'
 
 // Mock data for demonstration
 const mockPortfolio = {
@@ -102,6 +103,9 @@ export function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Market Overview */}
+      <MarketOverview />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Holdings */}
