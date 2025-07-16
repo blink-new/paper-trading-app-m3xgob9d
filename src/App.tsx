@@ -4,8 +4,10 @@ import { Sidebar } from '@/components/layout/Sidebar'
 import { Dashboard } from '@/pages/Dashboard'
 import { Portfolio } from '@/pages/Portfolio'
 import { Trading } from '@/pages/Trading'
+import { RealMoneyTrading } from '@/pages/RealMoneyTrading'
 import { Watchlist } from '@/pages/Watchlist'
 import { Performance } from '@/pages/Performance'
+import { PremiumUpgrade } from '@/components/PremiumUpgrade'
 import { blink } from '@/blink/client'
 
 function App() {
@@ -29,10 +31,14 @@ function App() {
         return <Portfolio />
       case 'trading':
         return <Trading />
+      case 'real-money':
+        return <RealMoneyTrading userId={user.id} />
       case 'watchlist':
         return <Watchlist />
       case 'performance':
         return <Performance />
+      case 'premium':
+        return <PremiumUpgrade userId={user.id} />
       default:
         return <Dashboard />
     }

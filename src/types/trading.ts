@@ -56,3 +56,56 @@ export interface WatchlistItem {
   changePercent: number
   createdAt: string
 }
+
+export interface UserSubscription {
+  id: string
+  userId: string
+  plan: 'free' | 'trial' | 'premium'
+  status: 'active' | 'expired' | 'cancelled'
+  trialEndsAt?: string
+  subscriptionEndsAt?: string
+  realMoneyEnabled: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export interface RealMoneyPortfolio {
+  id: string
+  userId: string
+  cashBalance: number
+  totalValue: number
+  totalGainLoss: number
+  totalGainLossPercent: number
+  createdAt: string
+  updatedAt: string
+}
+
+export interface RealMoneyHolding {
+  id: string
+  userId: string
+  symbol: string
+  companyName: string
+  shares: number
+  averagePrice: number
+  currentPrice: number
+  totalValue: number
+  gainLoss: number
+  gainLossPercent: number
+  createdAt: string
+  updatedAt: string
+}
+
+export interface RealMoneyTransaction {
+  id: string
+  userId: string
+  symbol: string
+  companyName: string
+  type: 'buy' | 'sell'
+  shares: number
+  price: number
+  totalAmount: number
+  fees: number
+  createdAt: string
+}
+
+export type AccountType = 'paper' | 'real'

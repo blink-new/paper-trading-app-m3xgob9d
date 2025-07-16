@@ -8,7 +8,9 @@ import {
   Eye, 
   PieChart,
   Menu,
-  X
+  X,
+  Crown,
+  DollarSign
 } from 'lucide-react'
 
 interface SidebarProps {
@@ -19,9 +21,11 @@ interface SidebarProps {
 const navigation = [
   { id: 'dashboard', name: 'Dashboard', icon: BarChart3 },
   { id: 'portfolio', name: 'Portfolio', icon: Briefcase },
-  { id: 'trading', name: 'Trading', icon: TrendingUp },
+  { id: 'trading', name: 'Paper Trading', icon: TrendingUp },
+  { id: 'real-money', name: 'Real Money', icon: DollarSign },
   { id: 'watchlist', name: 'Watchlist', icon: Eye },
   { id: 'performance', name: 'Performance', icon: PieChart },
+  { id: 'premium', name: 'Upgrade', icon: Crown },
 ]
 
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
